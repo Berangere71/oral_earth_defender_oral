@@ -15,6 +15,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 import { Assets } from "../Assets.js";
 import { GameObject } from "./GameObject.js";
+import { Alien } from "./Alien.js";
 var Laser = /** @class */ (function (_super) {
     __extends(Laser, _super);
     function Laser() {
@@ -35,22 +36,15 @@ var Laser = /** @class */ (function (_super) {
             x: this.getPosition().x,
             y: this.getPosition().y - 10,
         });
-        if (this.isActive) {
-            // Monte vers le haut
-            this.setPosition({
-                x: this.getPosition().x,
-                y: this.getPosition().y - this.speed
-            });
-            if (this.getPosition().y < -this.getHeight()) {
-                this.isActive = false;
-            }
+        if (this.getPosition().y < 0) {
+            this.getGame().destroy(this);
         }
     };
-    Laser.prototype.getIsActive = function () {
-        return this.isActive;
-    };
-    Laser.prototype.deactivate = function () {
-        this.isActive = false;
+    Laser.prototype.collide = function (other) {
+        if (other instanceof Alien) {
+            this.getGame().destroy(other);
+            this.getGame().destroy(this);
+        }
     };
     return Laser;
 }(GameObject));

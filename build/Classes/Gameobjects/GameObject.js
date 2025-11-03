@@ -7,8 +7,6 @@ var GameObject = /** @class */ (function () {
         };
         this.image = Assets.getDefaultImage();
         this.game = game;
-        this.width = this.image.width;
-        this.height = this.image.height;
         this.start();
     }
     // Getter d'image et de position
@@ -21,32 +19,50 @@ var GameObject = /** @class */ (function () {
     GameObject.prototype.getGame = function () {
         return this.game;
     };
-    GameObject.prototype.getWidth = function () {
-        return this.width;
-    };
-    GameObject.prototype.getHeight = function () {
-        return this.height;
-    };
     GameObject.prototype.setImage = function (image) {
         this.image = image;
-        this.width = image.width;
-        this.height = image.height;
     };
     GameObject.prototype.setPosition = function (position) {
         this.position = position;
     };
-    GameObject.prototype.setSize = function (width, height) {
-        this.width = width;
-        this.height = height;
-    };
-    /**
-       * Vérifie si l'autre GameObject entre en collision avec ce GameObject
-       */
     GameObject.prototype.overlap = function (other) {
-        return (this.position.x < other.position.x + other.width &&
-            this.position.x + this.width > other.position.x &&
-            this.position.y < other.position.y + other.height &&
-            this.position.y + this.height > other.position.y);
+        if (
+        // Check x axis overlap
+        (other.left() <= this.left() && this.left() <= other.right()
+            ||
+                other.left() <= this.right() && this.right() <= other.right()
+            ||
+                this.left() <= other.left() && other.left() <= this.right()
+            ||
+                this.left() <= other.right() && other.right() <= this.right())
+            &&
+                (
+                // check y axis overlap
+                other.top() <= this.top() && this.top() <= other.bottom()
+                    ||
+                        other.top() <= this.bottom() && this.bottom() <= other.bottom()
+                    ||
+                        this.top() <= other.top() && other.top() <= this.bottom()
+                    ||
+                        this.top() <= other.bottom() && other.bottom() <= this.bottom())) {
+            return true; // They overlap
+        }
+        else {
+            return false; // They do not overlap
+        }
+    };
+    /** Méthodes utilitaires pour la position du GameObject */
+    GameObject.prototype.top = function () {
+        return this.position.y;
+    };
+    GameObject.prototype.bottom = function () {
+        return this.position.y + this.image.height;
+    };
+    GameObject.prototype.left = function () {
+        return this.position.x;
+    };
+    GameObject.prototype.right = function () {
+        return this.position.x + this.image.width;
     };
     GameObject.prototype.start = function () { };
     GameObject.prototype.update = function () { };

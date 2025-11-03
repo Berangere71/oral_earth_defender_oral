@@ -14,19 +14,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import { GameObject } from "./GameObject.js";
-import { Assets } from "../Assets.js";
 var Earth = /** @class */ (function (_super) {
     __extends(Earth, _super);
     function Earth() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Earth.prototype.start = function () {
-        var heartImage = Assets.getHeartImage();
-        this.setImage(heartImage);
-        this.setSize(30, 30); // Petite taille pour le HUD
-    };
-    Earth.prototype.update = function () {
-        // Pas d'update nécessaire
     };
     return Earth;
 }(GameObject));

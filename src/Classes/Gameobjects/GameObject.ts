@@ -12,8 +12,8 @@ export class GameObject{
     private game : Game;
     private earth : Earth;
     private player : Player;
-    private width : number;
-    private height : number;
+ 
+
   
     
     constructor(game : Game){
@@ -23,9 +23,6 @@ export class GameObject{
         };
         this.image = Assets.getDefaultImage();
         this.game = game;
-        this.width = this.image.width;
-        this.height = this.image.height;
-
         this.start();
     }
 
@@ -40,41 +37,62 @@ export class GameObject{
         return this.game;
     }
 
-    public getWidth() : number {
-        return this.width;
-    }
-
-    public getHeight () : number {
-        return this.height;
-    }
-
-    public setImage(image : HTMLImageElement) {
+       public setImage(image : HTMLImageElement) {
         this.image = image;
 
-        this.width = image.width;
-        this.height = image.height;
+       
     }
 
     public setPosition(position : Position) {
         this.position = position;
     }
 
-    public setSize(width : number,height : number) {
-        this.width = width;
-        this.height = height;
+    public overlap(other : GameObject) : boolean{
+        if(
+            // Check x axis overlap
+            (
+                other.left() <= this.left() && this.left() <= other.right()
+                ||
+                other.left() <= this.right() && this.right() <= other.right()
+                ||
+                this.left() <= other.left() && other.left() <= this.right()
+                ||
+                this.left() <= other.right() && other.right() <= this.right()
+            )
+            &&
+            (
+                // check y axis overlap
+                other.top() <= this.top() && this.top() <= other.bottom()
+                ||
+                other.top() <= this.bottom() && this.bottom() <= other.bottom()
+                ||
+                this.top() <= other.top() && other.top() <= this.bottom()
+                ||
+                this.top() <= other.bottom() && other.bottom() <= this.bottom()
+            )
+        )
+        {
+            return true;        // They overlap
+        }
+        else{
+            return false;       // They do not overlap
+        }
     }
 
+ 
 
-  /**
-     * Vérifie si l'autre GameObject entre en collision avec ce GameObject
-     */
-     public overlap(other: GameObject): boolean {
-        return (
-            this.position.x < other.position.x + other.width &&
-            this.position.x + this.width > other.position.x &&
-            this.position.y < other.position.y + other.height &&
-            this.position.y + this.height > other.position.y
-        );
+    /** Méthodes utilitaires pour la position du GameObject */
+    public top() : number{
+        return this.position.y;
+    }
+    public bottom() : number{
+        return this.position.y + this.image.height;
+    }
+    public left() : number{
+        return this.position.x;
+    }
+    public right() : number{
+        return this.position.x + this.image.width;
     }
 
     protected start(): void {}

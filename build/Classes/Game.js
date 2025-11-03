@@ -69,9 +69,6 @@ var Game = /** @class */ (function () {
             _this.gameObjects.forEach(function (go) {
                 go.callUpdate();
                 _this.draw(go);
-                if (go instanceof Alien && _this.player.overlap(go)) {
-                    console.log("Alien touche le joueur");
-                }
                 _this.gameObjects.forEach(function (other) {
                     // +
                     // Si le gameObject chevauche un gameObject qui n'est pas lui-même

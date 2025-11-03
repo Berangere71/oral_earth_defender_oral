@@ -1,53 +1,47 @@
 
-import { Assets } from "../Assets.js"
-import { GameObject } from "./GameObject.js"
-import { Player } from "./Player.js"
+import { GameObject } from "./GameObject.js";
+import { Assets } from "../Assets.js";
+import { Player } from "./Player.js";
+import { Earth } from "./Earth.js"; // Importer Earth pour la collision
 
-export class Alien extends GameObject{
-    private speed : number = 1;
+export class Alien extends GameObject {
+    private speed: number = 1;
     private isAlive: boolean = true;
 
-       protected start(): void {
-           this.setImage(Assets.getAlienImage());
-           // Codez ici ...
-           this.setPosition ( {
-           x: Math.random() * this.getGame () .CANVAS_WIDTH,
-           y: Math.random() * this.getGame () .CANVAS_HEIGHT /4 - 50   
-           });
-       
-       }
-   
-        
-        protected collide(other: GameObject): void {
-            if (other instanceof Player) {
-                console.log ("Miam Miam !")
-                // this.getGame().over()
-            }
-        }
+    protected start(): void {
+        this.setImage(Assets.getAlienImage());
+        this.setPosition({
+            x: Math.random() * this.getGame().CANVAS_WIDTH,
+            y: Math.random() * this.getGame().CANVAS_HEIGHT / 4 - 50
+        });
+    }
 
-        protected update(): void {
-            if (this.isAlive) {
-            // Descend vers le bas
+    protected collide(other: GameObject): void {
+        if (other instanceof Player) {
+            console.log("Miam Miam !");
+            // this.getGame().over();
+        } else if (other instanceof Earth) {
+            console.log("L'alien touche la Terre !");
+            other.takeDamage(10); // Retire 10 points de vie à la Terre
+            this.kill(); // Optionnel : détruire l'alien après l'impact
+        }
+    }
+
+    protected update(): void {
+        if (this.isAlive) {
+            // Descendre vers le bas
             this.setPosition({
                 x: this.getPosition().x,
                 y: this.getPosition().y + this.speed
             });
         }
-        }
+    }
 
-        public getIsAlive(): boolean {
+    public getIsAlive(): boolean {
         return this.isAlive;
-        }
+    }
 
-        public kill(): void {
+    public kill(): void {
         this.isAlive = false;
-        }   
-
-        public hasReachedEarth(earthY: number): boolean {
-        return this.getPosition().y + this.getHeight() >= earthY;
-        }
-
-        public hasReachedPlayer(playerY: number): boolean {
-        return this.getPosition().y + this.getHeight() >= playerY;
-        }
+    }
 }

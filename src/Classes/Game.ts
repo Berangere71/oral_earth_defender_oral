@@ -106,10 +106,6 @@ export class Game{
         this.gameObjects.forEach(go=>{
             go.callUpdate();
             this.draw(go);
-        if(go instanceof Alien && this.player.overlap(go)){ 
-        console.log("Alien touche le joueur");
-            }
-
         this.gameObjects.forEach(other=>{
         // +
         // Si le gameObject chevauche un gameObject qui n'est pas lui-même

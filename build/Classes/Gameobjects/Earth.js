@@ -18,18 +18,29 @@ import { Assets } from "../Assets.js";
 var Earth = /** @class */ (function (_super) {
     __extends(Earth, _super);
     function Earth() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.health = 100;
+        return _this;
     }
     Earth.prototype.start = function () {
         var earthImage = Assets.getEarthImage();
         this.setImage(earthImage);
-        this.setSize(1500, 10000);
         this.setPosition({
             x: this.getGame().CANVAS_WIDTH / 2 - earthImage.width / 2,
             y: this.getGame().CANVAS_HEIGHT - 35
         });
     };
-    Earth.prototype.update = function () {
+    Earth.prototype.update = function () { };
+    Earth.prototype.takeDamage = function (amount) {
+        this.health -= amount;
+        console.log("La Terre a maintenant ".concat(this.health, " points de vie."));
+        if (this.health <= 0) {
+            this.destroy();
+        }
+    };
+    Earth.prototype.destroy = function () {
+        console.log("La Terre est détruite !");
+        // Logique pour gérer la destruction de la Terre
     };
     return Earth;
 }(GameObject));

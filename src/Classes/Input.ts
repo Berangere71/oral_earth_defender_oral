@@ -7,7 +7,7 @@ export class Input{
         return this.isShooting;
     }
 
-    public static getAxisX(){
+    public static getAxisX() {
         return this.axisX;
     }
     public static listen(){
@@ -46,38 +46,8 @@ export class Input{
                     break;
             }
         });
-        // Key Down
-        document.addEventListener("keydown",(event)=>{
-            switch (event.key) {
-                // Go right
-                case "d":
-                case "D":
-                    Input.axisX = 1;
-                    break;
-                // Go left
-                case "q":
-                case "Q":
-                    Input.axisX = -1;
-                    break;
-                default:
-                    break;
-            }
-        });
-
-        // Key Realeased
-        document.addEventListener("keyup",(event)=>{
-            switch (event.key) {
-                // Player Stops
-                case "d":
-                case "D":
-                case "q":
-                case "Q":
-                    Input.axisX = 0;
-                break;
-                default:
-                    break;
-            }
-        });
+   
+        
     }
 }
 

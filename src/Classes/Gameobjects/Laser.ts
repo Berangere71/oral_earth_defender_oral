@@ -23,24 +23,15 @@ export class Laser extends GameObject {
             y : this.getPosition().y -10,
         });
 
-        if (this.isActive) {
-            // Monte vers le haut
-            this.setPosition({
-                x: this.getPosition().x,
-                y: this.getPosition().y - this.speed
-            });
-
-        if (this.getPosition().y < -this.getHeight()) {
-                this.isActive = false;
-            }
+     if(this.getPosition().y < 0){
+            this.getGame().destroy(this);
+        }
     }  
-}
-    public getIsActive(): boolean {
-        return this.isActive;
-    }
 
-    public deactivate(): void {
-        this.isActive = false;
+    protected collide(other: GameObject): void {
+        if(other instanceof Alien){
+            this.getGame().destroy(other);
+            this.getGame().destroy(this);
+        }
     }
-
 }

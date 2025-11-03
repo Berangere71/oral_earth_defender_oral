@@ -13,9 +13,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { Assets } from "../Assets.js";
 import { GameObject } from "./GameObject.js";
+import { Assets } from "../Assets.js";
 import { Player } from "./Player.js";
+import { Earth } from "./Earth.js"; // Importer Earth pour la collision
 var Alien = /** @class */ (function (_super) {
     __extends(Alien, _super);
     function Alien() {
@@ -26,7 +27,6 @@ var Alien = /** @class */ (function (_super) {
     }
     Alien.prototype.start = function () {
         this.setImage(Assets.getAlienImage());
-        // Codez ici ...
         this.setPosition({
             x: Math.random() * this.getGame().CANVAS_WIDTH,
             y: Math.random() * this.getGame().CANVAS_HEIGHT / 4 - 50
@@ -35,12 +35,17 @@ var Alien = /** @class */ (function (_super) {
     Alien.prototype.collide = function (other) {
         if (other instanceof Player) {
             console.log("Miam Miam !");
-            // this.getGame().over()
+            // this.getGame().over();
+        }
+        else if (other instanceof Earth) {
+            console.log("L'alien touche la Terre !");
+            other.takeDamage(10); // Retire 10 points de vie à la Terre
+            this.kill(); // Optionnel : détruire l'alien après l'impact
         }
     };
     Alien.prototype.update = function () {
         if (this.isAlive) {
-            // Descend vers le bas
+            // Descendre vers le bas
             this.setPosition({
                 x: this.getPosition().x,
                 y: this.getPosition().y + this.speed
@@ -52,12 +57,6 @@ var Alien = /** @class */ (function (_super) {
     };
     Alien.prototype.kill = function () {
         this.isAlive = false;
-    };
-    Alien.prototype.hasReachedEarth = function (earthY) {
-        return this.getPosition().y + this.getHeight() >= earthY;
-    };
-    Alien.prototype.hasReachedPlayer = function (playerY) {
-        return this.getPosition().y + this.getHeight() >= playerY;
     };
     return Alien;
 }(GameObject));
